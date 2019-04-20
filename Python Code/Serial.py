@@ -11,7 +11,7 @@ except:
 if(ser.isOpen()):
 	try:
 		while(1):
-			print(ser.readline())
+			print(str(ser.readline()))
 	except EXCEPTION:
 		print("Error")
 
