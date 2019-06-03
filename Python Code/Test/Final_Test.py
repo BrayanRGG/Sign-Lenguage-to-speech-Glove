@@ -52,11 +52,19 @@ if(ser.isOpen()):
 			rdecoded = [float(x) for x in decode.split(',')]
 			############################################################
 			xPredicted = np.array((rdecoded), dtype=float)
+            xy = np.zeros(200)
+            i=0
+            while(i<200):
+                xy[i,:] = xPredicted[1,:]
+            maxInColumns = numpy.amax(xy, axis=0)
+            minInColumns = numpy.amin(xy, axis=0)
+            delta = maxInColumns - minInColumns
+            judge = numpy.amax(delta)
 
-
-			
-			rl = NN.Obtain()
-			print(rl)
+            if(judge<.1):
+                xPredicted = np.mean(xy, axis = 0)
+                rl = NN.Obtain()
+                print(rl)
 
 	except EXCEPTION:
 		print("Error")
