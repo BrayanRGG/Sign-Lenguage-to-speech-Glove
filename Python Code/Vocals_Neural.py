@@ -1,6 +1,6 @@
 import numpy as np
 
-# X = (hours studying, hours sleeping), y = score on test, xPredicted = 4 hours studying & 8 hours sleeping (input data for prediction)
+# X = Valores de referencia, y = Resultado, xPredicted = 4 hours studying & 8 hours sleeping (input data for prediction)
 A = [1, 0.596446154, 0.594261538, 0.596446154, 0.567853846]
 E = [0.6, 0.562749164, 0.610612709, 0.624120067, 0.614790301]
 I = [0.8, 0.587176589, 0.627032441, 0.641683946, 1]
