@@ -1,5 +1,28 @@
 import numpy as np
 import serial
+import time
+import boto3
+import playsound
+
+
+
+def play_sound(text):
+	poly = boto3.client(
+    'polly',
+    region_name='us-east-1',
+    aws_access_key_id='AKIA4DLSPRU2WEQGDOOP',
+    aws_secret_access_key='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',
+    )
+	response = poly.synthesize_speech(Text=text,VoiceId='Miguel',OutputFormat='mp3')
+
+	body = response['AudioStream'].read()
+
+	file_name = 'voice.mp3'
+
+	with open(file_name,'wb') as file:
+		file.write(body)
+		file.close()
+
 
 class Neural_Network(object):
 
@@ -44,6 +67,7 @@ NN = Neural_Network()
 
 if(ser.isOpen()):
 	try:
+		word = ''
 		while(1):
 			i=0
 			p = np.zeros(20)
@@ -54,14 +78,20 @@ if(ser.isOpen()):
 				code = ser.readline()
 				decode = code.decode('utf-8')
 				#print(decode);
-				rdecoded = [float(x) for x in decode.split(',')]
-				############################################################
-				xPredicted = np.array((rdecoded), dtype=float)
-				j=0
-				while(j<5):
-					xy[i,j] = xPredicted[j]
-					j=j + 1
-				i=i+1
+				if(decode=='Go'):
+					print(word)
+					play_sound(word)
+					playsound.playsound('voice.mp3', True)
+					word = ''
+					time.sleep(500/1000)
+				else:
+					rdecoded = [float(x) for x in decode.split(',')]
+					xPredicted = np.array((rdecoded), dtype=float)
+					j=0
+					while(j<5):
+						xy[i,j] = xPredicted[j]
+						j=j + 1
+					i=i+1
 				#print(xPredicted)
 
 			'''maxInColumns = np.amax(xy, axis=0)
@@ -80,8 +110,8 @@ if(ser.isOpen()):
 					4: "O",
 					5: "U"
 				}
-
 				print(thisdict[rl]);
+				word = word + thisdict[rl]
 
 	except EXCEPTION:
 		print("Error")

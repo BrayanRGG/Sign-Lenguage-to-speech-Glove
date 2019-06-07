@@ -1,4 +1,6 @@
 import boto3
+import playsound
+import time
 
 poly = boto3.client(
     'polly',
@@ -17,6 +19,10 @@ def play_sound(text):
 	with open(file_name,'wb') as file:
 		file.write(body)
 		file.close()
+	playsound.playsound('voice.mp3', True)
+i=0
+while(1==1):
+	play_sound(str(i))
+	i=i+1
+	time.sleep(1)
 
-if __name__ == '__main__':
-	play_sound('Me quede sin pila')

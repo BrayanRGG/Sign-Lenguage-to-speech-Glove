@@ -45,18 +45,43 @@ NN = Neural_Network()
 if(ser.isOpen()):
 	try:
 		while(1):
-			ser.write(b'1')
-			code = ser.readline()
-			decode = code.decode('utf-8')
-			print(decode);
-			rdecoded = [float(x) for x in decode.split(',')]
-			############################################################
-			xPredicted = np.array((rdecoded), dtype=float)
-
-
+			i=0
+			p = np.zeros(20)
+			xy = np.zeros((20,5),dtype=float)
 			
-			rl = NN.Obtain()
-			print(rl)
+			for x in p:
+				ser.write(b'1')
+				code = ser.readline()
+				decode = code.decode('utf-8')
+				#print(decode);
+				rdecoded = [float(x) for x in decode.split(',')]
+				############################################################
+				xPredicted = np.array((rdecoded), dtype=float)
+				j=0
+				while(j<5):
+					xy[i,j] = xPredicted[j]
+					j=j + 1
+				i=i+1
+				#print(xPredicted)
+
+			'''maxInColumns = np.amax(xy, axis=0)
+			minInColumns = np.amin(xy, axis=0)
+			delta = maxInColumns - minInColumns
+			judge = np.amax(delta)
+			print(delta)'''
+			if(1==1):
+				xPredicted = np.mean(xy, axis = 0)
+				rl = NN.Obtain()
+				thisdict =	{
+					0: "A",
+					1: "A",
+					2: "E",
+					3: "I",
+					4: "O",
+					5: "U"
+				}
+
+				print(thisdict[rl]);
 
 	except EXCEPTION:
 		print("Error")
